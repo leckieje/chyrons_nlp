@@ -107,7 +107,7 @@ def get_special_stops(feature_names):
     return [numeric, non_alpha, unders, multi_lett]
 
 
-# PIPELINE FOR Counts:
+# PIPELINES:
 
 def load_samps(num_samples=250000):
     chyrons = pd.read_csv('chyron_all.csv') # read all data
@@ -123,3 +123,11 @@ def clean_counts(chy_samp):
     count_features, chyron_counts = get_countvec(chy_samp['text'], stop_words=stop_words_plus) # get new vector matrix
 
     return count_features, chyron_counts
+
+def clean_tfidf(chy_samp):
+    tfidf_features, chyron_tfidf = get_tfidf(chy_samp, max_features=None, min_df=20, stop_words='english') # get primary feature names
+    stops = get_special_stops(tfidf_features) # get additional stop words
+    stop_words_plus = get_stop_words(stops) # add to nltk stop words
+    tfidf_features, chyron_tfidf = get_tfidf(chy_samp, max_features=None, min_df=20, stop_words=stop_words_plus) # get new vector matrix
+
+    return tfidf_features, chyron_tfidf
