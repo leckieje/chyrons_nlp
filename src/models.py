@@ -166,8 +166,8 @@ def plot_roc_forest(X, y, vec_type='(Count)', max_depth=10):
 def chart_gini_import(model, X, size=15):
     fig, ax = plt.subplots()
     feature_scores = pd.Series(model.feature_importances_, index=X.columns)
-    feature_scores = feature_scores[:num].sort_values()
-    ax = feature_scores.plot(kind='barh', figsize=(10,4))
+    feature_scores = feature_scores.sort_values()
+    ax = feature_scores[:num].plot(kind='barh', figsize=(10,4))
     ax.set_title('Gini Importance')
     ax.set_xlabel('Avg. Contribution to Info Gain');
 
