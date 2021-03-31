@@ -24,6 +24,37 @@ X_train_T, X_test_T, y_train_T, y_test_T = train_test_split(X_tfidf, y,
 
 # Naive Bayes
 
+def eval_naive_bayes(X, y, folds=20, fit_prior=False):
+    kf = KFold(n_splits=folds, shuffle=True)
+    accuracy = []
+    
+    for train, test in kf.split(X):
+        model = MultinomialNB(alpha=1, fit_prior=fit_prior)
+        model.fit(X.iloc[train], y.iloc[train])
+        accuracy.append(model.score(X.iloc[test], y.iloc[test]))
+    
+    return model, np.mean(accuracy)
+
+def test_folds(X, y, fold_lst):
+    accuracy = []
+    iters = 0
+    for folds in fold_lst:
+        print(iters)
+        accuracy.append(eval_naive_bayes(X, y, folds=folds))
+        
+        iters += 1
+        
+    return accuracy
+
+def plot_naive_bayes(X, y, fold_lst):
+    fig, ax = plt.subplots()
+    xs = fold_lst
+    ys = test_folds(X, y, fold_lst)
+    ax.plot(xs, ys)
+    ax.set_title('Naive Bayes Accuracy by Num_Folds')
+    ax.set_ylabel('Accuracy')
+    ax.set_xlabel('Folds');
+
 
 # ROC Curve
 def plot_roc(X, y, vec_type='Count'):
@@ -45,7 +76,71 @@ def plot_roc(X, y, vec_type='Count'):
     return thresh
 
 # Random Forest
+ def eval_random_forest(X, y, folds=10, n_estimators=100, max_depth=5, max_leaf=None, max_features='log2'):
+    kf = KFold(n_splits=folds, shuffle=True)
+    accuracy = []
+    oob = []
+    iters = 0
+    
+    for train, test in kf.split(X):
+        forest = RandomForestClassifier(n_estimators=n_estimators, 
+                                        max_depth=max_depth, n_jobs=-1, 
+                                        max_leaf_nodes=max_leaf, max_features=max_features, 
+                                        oob_score=True)
+        forest.fit(X.iloc[train], y.iloc[train])
+        accuracy.append(forest.score(X.iloc[test], y.iloc[test]))
+        oob.append(forest.oob_score_)
+        
+        print(iters)
+        iters += 1
+    
+    return np.mean(accuracy), np.mean(oob), forest
 
+def test_forest_folds(X, y, fold_lst):
+    accuracy = []
+    for folds in fold_lst:
+        accuracy.append(eval_random_forest(X, y, folds=folds))
+        
+    return accuracy
+
+def test_forest_depth(X, y, depth_lst):
+    accuracy = []
+    for depth in depth_lst:
+        accuracy.append(eval_random_forest(X, y, max_depth=depth))
+        
+    return accuracy
+
+def test_forest_estimators(X, y, est_lst):
+    accuracy = []
+    for est in est_lst:
+        accuracy.append(eval_random_forest(X, y, n_estimators=est, max_depth=50))
+        
+    return accuracy
+
+def test_max_leafs(X, y, leaf_lst):
+    accuracy = []
+    for leaf in leaf_lst:
+        accuracy.append(eval_random_forest(X, y, max_leaf=leaf))
+        
+    return accuracy
+
+def plot_folds_random_forest_folds(X, y, fold_lst):
+    fig, ax = plt.subplots()
+    xs = fold_lst
+    ys = test_forest_folds(X, y, fold_lst)
+    ax.plot(xs, ys)
+    ax.set_title('Random Forest Accuracy by Folds')
+    ax.set_ylabel('Accuracy')
+    ax.set_xlabel('Folds');
+    
+def plot_depth_random_forest(X, y, depth_lst):
+    fig, ax = plt.subplots()
+    xs = depth_lst
+    ys = test_forest_depth(X, y, depth_lst)
+    ax.plot(xs, ys)
+    ax.set_title('Random Forest Accuracy by Depth')
+    ax.set_ylabel('Accuracy')
+    ax.set_xlabel('Depth');
 
 # ROC Curve
 def plot_roc_forest(X, y, vec_type='(Count)', max_depth=10):
