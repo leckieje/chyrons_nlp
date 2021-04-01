@@ -20,13 +20,23 @@ chy_nets = get_network_pair(chy_summer, net_one='FOXNEWSW', net_two='MSNBCW')
 feature_count, count_vec = clean_counts(chy_nets, n_grams=(1,1))
 feature_tfidf, tfidf_vec = clean_tfidf(chy_nets, n_grams=(1,1))
 
+OR:
 
+chy_summer = load_summer()
+
+chy_nets = get_network_pair(chy_summer, net_one='FOXNEWSW', net_two='MSNBCW')
+feature_count, count_vec = clean_counts(chy_nets, n_grams=(1,2))
+
+fox_features, fox_counts = clean_counts(chy_nets.loc[chy_nets['channel'] == 'FOXNEWSW'], n_grams=(1,2))
+msnbc_features, msnbc_counts = clean_counts(chy_nets.loc[chy_nets['channel'] == 'MSNBCW'], n_grams=(1,2))
+fox_df = get_dataframe(fox_counts, fox_features)
+msnbc_df = get_dataframe(msnbc_counts, msnbc_features)
 '''
 
 # sklearn pipeline 
 
 # english dictionary 
-eng_dict = words.words()
+# eng_dict = words.words()
 
 # get a random sample of chyrons
 def get_random_sample(df, num_samples):
@@ -36,12 +46,19 @@ def get_random_sample(df, num_samples):
     return df_samp
 
 # get stop words
-def get_stop_words(words):
+custom_stops = ['msnbc', 'nbc', 'nbc news', 'mssnbc news', 'fox', 'fox news', 
+                'says', 'er', 'tn', 'ui', 'thf', 'thf', 'nm', 'ni', 'new', 'nl'
+                'li', 'iu', 'ai', 'ul', 'wsntunnelztowersdrg', 'yingst', 'wnr'
+                'irl', 'wopi', 'across', 'xeljanz']
+
+def get_stop_words(words, custom_stops=custom_stops):
     sw = stopwords.words('english')
     stops = words[0]
     
     for lst in words[1:]:
         stops += lst
+
+    stops = stops + custom_stops
     
     return sw + stops
 
@@ -125,7 +142,7 @@ def get_special_stops(feature_names):
 
 ## ------------------------------------------------------ ##
 
-# PIPELINES:
+# PIPELINE:
 
 def load_samps(num_samples):
     chyrons = pd.read_csv('/Users/jonleckie/Desktop/DSI_all/capstones/capstone_two/chyrons/chyron_all.csv') # read all data
@@ -153,8 +170,10 @@ def clean_tfidf(chy_samp, min_df=.001, n_grams=(1,1)):
 
 # limit data from summer 2020, MSNBC and Fox
 def load_summer(start_date='2020-05-25', end_date='2020-11-03'):
-    chyrons = pd.read_csv('/Users/jonleckie/Desktop/DSI_all/capstones/capstone_two/chyrons/chyron_all.csv')
+    chyrons = pd.read_csv('chyron_all.csv')
     chyrons.drop(472372, inplace=True)
+    chyrons = chyrons.replace(r'\\n',' ',regex=True)
+    chyrons = chyrons.replace(r'\\u',' ',regex=True)
     chy_summer = chyrons.loc[(chyrons['date_time_(UTC)'] >= start_date) & (chyrons['date_time_(UTC)'] <= end_date)]
     
     return chy_summer
@@ -163,3 +182,77 @@ def get_network_pair(df, net_one='FOXNEWSW', net_two='MSNBCW'):
     chy_nets = df.loc[(df['channel'] == net_one) | (df['channel'] == net_two)]
     
     return chy_nets
+
+## ------------------------------------------------------ ##
+
+# for word frequency charting
+def get_word_freq(df):
+    series = df.sum()
+    series = series.apply(lambda x: x/len(series))
+    return series
+
+def get_freq_df(fox, msnbc):
+#     words = [word for words in fox.index] + [word for word in msnbc.index]
+    shared_words = []
+    freq = []
+    diff = []
+    
+    for word in fox.index:
+        if word in msnbc.index:
+            shared_words.append(word)
+            freq.append((fox[word], msnbc[word]))  
+            diff.append(np.abs(fox[word] - msnbc[word]))
+            
+    freq_df = pd.DataFrame({'word': shared_words, 'fox_freq':[freq[0] for freq in freq],
+                           'msnbc_freq': [freq[1] for freq in freq], 'difference': diff})
+            
+    return freq_df
+
+def freq_df(fox_df, msnbc_df):
+    fox_freq = get_word_freq(fox_df)
+    msnbc_freq = get_word_freq(msnbc_df)
+    df = get_freq_df(fox_freq, msnbc_freq)
+    df.sort_values(by='difference', ascending=False, axis=0, inplace=True)
+    
+    return df
+
+# chart consecutive word frequencies
+def chart_freq_diff(df):
+    fig, ax = plt.subplots()
+    labels = df['word']
+    fox = df['fox_freq']
+    msnbc = df['msnbc_freq']
+    
+    x = np.arange(len(labels))
+    width = 0.35
+    fox_bar = ax.bar(x - width/2, fox, width, label='Fox News')
+    msnbc_bar = ax.bar(x + width/2, msnbc, width, label='MSNBC')
+    
+    ax.set_ylabel('Frequency')
+    ax.set_title('Word Use Frequency')
+    ax.set_xticks(x)
+    ax.set_xticklabels(labels)
+    ax.legend()
+
+    fig.tight_layout();
+
+# chart by choice of words
+def chart_word_diff(df, word_lst):
+    fig, ax = plt.subplots()
+    labels = word_lst
+    df_ = df.set_index('word')
+    fox = df_.loc[word_lst, 'fox_freq']
+    msnbc = df_.loc[word_lst, 'msnbc_freq']
+    
+    x = np.arange(len(labels))
+    width = 0.35
+    fox_bar = ax.bar(x - width/2, fox, width, label='Fox News')
+    msnbc_bar = ax.bar(x + width/2, msnbc, width, label='MSNBC')
+    
+    ax.set_ylabel('Frequency')
+    ax.set_title('Word Use Frequency')
+    ax.set_xticks(x)
+    ax.set_xticklabels(labels)
+    ax.legend()
+
+    fig.tight_layout();
