@@ -76,7 +76,7 @@ def plot_roc(X, y, vec_type='Count'):
     return thresh
 
 # Random Forest
- def eval_random_forest(X, y, folds=10, n_estimators=100, max_depth=5, max_leaf=None, max_features='log2'):
+def eval_random_forest(X, y, folds=10, n_estimators=100, max_depth=5, max_leaf=None, max_features='log2'):
     kf = KFold(n_splits=folds, shuffle=True)
     accuracy = []
     oob = []
