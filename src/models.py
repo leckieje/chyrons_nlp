@@ -40,7 +40,8 @@ def test_folds(X, y, fold_lst):
     iters = 0
     for folds in fold_lst:
         print(iters)
-        accuracy.append(eval_naive_bayes(X, y, folds=folds))
+        model, score = eval_naive_bayes(X, y, folds=folds)
+        accuracy.append(score)
         
         iters += 1
         
