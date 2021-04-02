@@ -22,8 +22,8 @@ X_train_T, X_test_T, y_train_T, y_test_T = train_test_split(X_tfidf, y,
 
 '''
 
-# Naive Bayes
 
+# Naive Bayes
 def eval_naive_bayes(X, y, folds=20, fit_prior=False):
     kf = KFold(n_splits=folds, shuffle=True)
     accuracy = []
@@ -208,3 +208,31 @@ def chart_shared_word_counts(thresh=20000):
     ax.set_title('Shared Word Counts by Network')
     ax.set_xlabel('MSNBC')
     ax.set_ylabel('Fox News');
+
+# sorting model probabilites to pull related chyrons 
+def sort_probs(model, X, y):
+    y_net = [1 if net == 'MSNBCW' else 0 for net in y]
+    probs = model.predict_proba(X)
+    df = pd.DataFrame(probs)
+    df['net'] = y_net
+    df['index'] = X.index
+    msnbc = df.loc[df['net'] == 1]
+    fox = df.loc[df['net'] == 0]
+
+    return msnbc, fox
+
+msnbc, fox = sort_probs(bayes, X_train, y_train)
+
+def sort_chyrons(msnbc, fox):
+    sorted_ms = []
+    sorted_fox = []
+    ms_sort = msnbc.sort_values(by=1)
+    fox_sort = fox.sort_values(by=1)
+
+    for i in ms_sort['index']:
+        sorted_ms.append(chy_summer.iloc[i, 6])
+
+    for i in fox_sort['index']:
+        sorted_fox.append(chy_summer.iloc[i, 6])
+    
+    return sorted_fox, sorted_ms
