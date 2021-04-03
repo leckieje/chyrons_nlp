@@ -1,6 +1,7 @@
 # sklearn pipeline 
 import pandas as pd 
 import numpy as np
+import matplotlib.pyplot as plt
 import random
 import string
 import re

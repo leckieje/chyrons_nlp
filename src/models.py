@@ -5,6 +5,7 @@ from sklearn.metrics import plot_confusion_matrix, roc_curve
 from sklearn.decomposition import NMF
 from sklearn.inspection import permutation_importance, plot_partial_dependence, partial_dependence
 
+import matplotlib.pyplot as plt
 '''
 ---> To prep for models:
 
