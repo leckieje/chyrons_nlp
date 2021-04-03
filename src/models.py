@@ -1,3 +1,7 @@
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.model_selection import train_test_split, KFold
 from sklearn.ensemble import RandomForestClassifier
@@ -5,8 +9,6 @@ from sklearn.metrics import plot_confusion_matrix, roc_curve
 from sklearn.decomposition import NMF
 from sklearn.inspection import permutation_importance, plot_partial_dependence, partial_dependence
 
-import matplotlib.pyplot as plt
-import numpy as np
 '''
 ---> To prep for models:
 
