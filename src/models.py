@@ -6,6 +6,7 @@ from sklearn.decomposition import NMF
 from sklearn.inspection import permutation_importance, plot_partial_dependence, partial_dependence
 
 import matplotlib.pyplot as plt
+import numpy as np
 '''
 ---> To prep for models:
 
@@ -194,7 +195,7 @@ def chart_top(word_lst, network, low=0, high=10,):
     ax.set_xlabel('Counts');
 
 # shared words (network word counts against each other)
-def chart_shared_word_counts(thresh=20000):
+def chart_shared_word_counts(nbc_word_counts, fox_word_counts, thresh=20000):
     fig, ax = plt.subplots()
     nbc_lt = []
     fox_lt = []
