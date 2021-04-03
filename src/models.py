@@ -221,8 +221,6 @@ def sort_probs(model, X, y):
 
     return msnbc, fox
 
-msnbc, fox = sort_probs(bayes, X_train, y_train)
-
 def sort_chyrons(msnbc, fox):
     sorted_ms = []
     sorted_fox = []
