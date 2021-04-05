@@ -20,6 +20,7 @@ For the purposes of this project, I chose to focus on extremes and thus limited 
 
 It is important to note that the Third Eye's optical character recognition software is not perfect. As you can see in the image from their website below, there are often mispelings, such as 'mic' being read as 'nic'. Similarly, given the brevity of chyrons, abrreviations are often used. Here 'WH' is a stand in for 'White House', but others were found as well, including 'pres' for 'president' and 'rep' for 'representative'.
 
+---
 
 ## Word Use Frequency 
 
@@ -36,7 +37,6 @@ I had also initally been surprised to see how much more the term `trump` appeare
 <p align="center">
   <img width="600" src="https://github.com/leckieje/chyrons_nlp/blob/main/imgs/shared_words.png">
 </p>
-
 
 ---
 
@@ -59,6 +59,8 @@ What is interesting about this classification is that is aligns with popular opi
 <p align="center">
   <img width="800" src="https://github.com/leckieje/chyrons_nlp/blob/main/imgs/fox_news_chyron.png">
 </p>
+
+---
 
 ## The Future
 
