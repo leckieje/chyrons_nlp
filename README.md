@@ -10,7 +10,7 @@ The televison news chyron is an important, if often overlooked, element of our m
  
 ## The Data 
 
-<img align="right" width="300" src="https://github.com/leckieje/chyrons_nlp/blob/main/imgs/thirdEye.png">
+<img align="right" width="250" src="https://github.com/leckieje/chyrons_nlp/blob/main/imgs/thirdEye.png">
 
 <img align="right" width="175" src="https://github.com/leckieje/chyrons_nlp/blob/main/imgs/archive_logo.jpeg">
 
@@ -37,6 +37,8 @@ I had also initally been surprised to see how much more the term `trump` appeare
   <img width="600" src="https://github.com/leckieje/chyrons_nlp/blob/main/imgs/shared_words.png">
 </p>
 
+
+---
 
 ## The Model 
 
