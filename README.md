@@ -10,19 +10,15 @@ The televison news chyron is an important, if often overlooked, element of our m
  
 ## The Data 
 
-<img align="right" width="300" src="https://github.com/leckieje/chyrons_nlp/blob/main/imgs/thirdEye.png">
+<img align="right" width="200" src="https://github.com/leckieje/chyrons_nlp/blob/main/imgs/thirdEye.png">
 
-<img align="right" width="150" src="https://github.com/leckieje/chyrons_nlp/blob/main/imgs/archive_logo.jpeg">
+<img align="right" width="200" src="https://github.com/leckieje/chyrons_nlp/blob/main/imgs/archive_logo.jpeg">
 
 For data, I turned to the [Internet Archive](https://archive.org/about/) and it's [Third Eye](https://archive.org/services/third-eye.php) project built by TV architect Tracey Jaquith. Launched in late 2017, the Third Eye captures chyrons for four major cable news networks, including BBC, CNN, Fox News and MSNBC. Building a script to utilize the site's simple API (included in `src/`), I downloaded more thhe 2.6 million chyrons from all four networks between September 7, 2017 and March 16, 2021. The dataset had been slightly filtered by the Internet Archive for use in its twitterr feeds and limtied to 60 second gaps between entries. Features included the time the chyron appeared, its duration, and of course the network and text of the chyron. 
 
 For the purposes of this project, I chose to focus on extremes and thus limited the data I would use for anylisis and modeling to chyrons from Fox News and MSNBC. Likewise, I chose to focus on a contencious period in our domesstic politics between March 25, 2020, the day George Floyd was murdered in Minneapolis, and November 3, 2020 the day of the presidential election between Joe Biden and Donald Trump. After filtering for the two networks and within the date window, I was left with slightly less than 200,000 chyrons. 
 
 It is important to note that the Third Eye's optical character recognition software is not perfect. As you can see in the image from their website below, there are often mispelings, such as 'mic' being read as 'nic'. Similarly, given the brevity of chyrons, abrreviations are often used. Here 'WH' is a stand in for 'White House', but others were found as well, including 'pres' for 'president' and 'rep' for 'representative'.
-
-<p align="center">
-  <img width="600" src="https://github.com/leckieje/chyrons_nlp/blob/main/imgs/third_eye.png">
-</p>
 
 
 ## Word Use Frequency 
