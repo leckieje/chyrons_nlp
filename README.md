@@ -21,13 +21,14 @@ It is important to note that the Third Eye's optical character recognition softw
 
 ## Word Use Frequency 
 
-Some of the most illuminating insights during EDA came from charting word use frequencies at each network. In the charts here, you can see a few of the most significant differences in word frequecies. For example, on MSNBC you are much more likely to see the words `'virus', 'cases', 'covid', 'nyt'` and `'harris'` appear on the networks chyrons than on Fox News. Alternatively, you are much more likely to see the words `'president trump', 'police', 'violence', 'media'` and `'left'` on Fox News compared with MSNBC. 
+Some of the most illuminating insights during EDA came from charting word use frequencies at each network. In the charts below, you can see a few of the most significant differences in word frequecies. For example, on MSNBC you are much more likely to see the words `'virus', 'cases', 'covid', 'nyt'` and `'harris'`  than on Fox News. Alternatively, you are much more likely to see the words `'president trump', 'police', 'violence', 'media'` and `'left'` on Fox News compared with MSNBC. Later, I will run a Naive Bayes model to make predictions about which network ran which chyron, but already we are starting to see some separation in chyron vocabulary from each network 
 
-Alrerady we arre staring to ssee separation 
+I also chose to look at shared words among the networks. While shared words may not give insight into how the Naive Bayes model is making decisions, it does shed some light on the issues and people most that dominate news coverage. To try and glean these insightsm I charted the networks against each other with Fox News on the y-axis and MSNBC on the x-axis. The points represent a single word. Of the 2,282 words in my vocabularly, the vast majority clsustered into the bottom left hand corner of the chart. Many of these words appeared more than 5,000 times on both networks, but visually they still clustered near words much closer to the origin because of the overwhelming popularity of a single word at both networks. 
 
 
 ## The Model 
 
+As mentioned, I ran a Naive Bayes model to predict which network ran each chyron. 
 
 ## The Future
 
@@ -37,3 +38,8 @@ Alrerady we arre staring to ssee separation
 
 ## The Tech
 
+
+
+#### Contact:
+
+leckieje@gmail.com
