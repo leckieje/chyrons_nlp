@@ -10,9 +10,9 @@ The televison news chyron is an important, if often overlooked, element of our m
  
 ## The Data 
 
-<img align="right" width="200" src="https://github.com/leckieje/chyrons_nlp/blob/main/imgs/thirdEye.png">
+<img align="right" width="300" src="https://github.com/leckieje/chyrons_nlp/blob/main/imgs/thirdEye.png">
 
-<img align="right" width="200" src="https://github.com/leckieje/chyrons_nlp/blob/main/imgs/archive_logo.jpeg">
+<img align="right" width="175" src="https://github.com/leckieje/chyrons_nlp/blob/main/imgs/archive_logo.jpeg">
 
 For data, I turned to the [Internet Archive](https://archive.org/about/) and it's [Third Eye](https://archive.org/services/third-eye.php) project built by TV architect Tracey Jaquith. Launched in late 2017, the Third Eye captures chyrons for four major cable news networks, including BBC, CNN, Fox News and MSNBC. Building a script to utilize the site's simple API (included in `src/`), I downloaded more thhe 2.6 million chyrons from all four networks between September 7, 2017 and March 16, 2021. The dataset had been slightly filtered by the Internet Archive for use in its twitterr feeds and limtied to 60 second gaps between entries. Features included the time the chyron appeared, its duration, and of course the network and text of the chyron. 
 
@@ -23,9 +23,9 @@ It is important to note that the Third Eye's optical character recognition softw
 
 ## Word Use Frequency 
 
-<img align="right" width="500" src="https://github.com/leckieje/chyrons_nlp/blob/main/imgs/msnbc_worduse_bar.png">
+<img align="right" width="475" src="https://github.com/leckieje/chyrons_nlp/blob/main/imgs/msnbc_worduse_bar.png">
 
-<img align="right" width="500" src="https://github.com/leckieje/chyrons_nlp/blob/main/imgs/fox_worduse_bar.png">
+<img align="right" width="475" src="https://github.com/leckieje/chyrons_nlp/blob/main/imgs/fox_worduse_bar.png">
 
 Some of the most illuminating insights during EDA came from charting word use frequencies at each network. In the charts below, you can see a few of the most significant differences in word frequecies. For example, on MSNBC you are much more likely to see the words `'virus', 'cases', 'covid', 'nyt'` and `'harris'`  than on Fox News. Alternatively, you are much more likely to see the words `'president trump', 'police', 'violence', 'media'` and `'left'` on Fox News compared with MSNBC. Later, I will show the results of a Naive Bayes model used to make predictions about which network ran which chyron, but already we are starting to see some separation in chyron vocabulary from each network 
 
@@ -40,7 +40,7 @@ I had also initally been surprised to see how much more the term `trump` appeare
 
 ## The Model 
 
-<img align="right" width="500" src="https://github.com/leckieje/chyrons_nlp/blob/main/imgs/final_roc_NB_bigrams.png">
+<img align="right" width="475" src="https://github.com/leckieje/chyrons_nlp/blob/main/imgs/final_roc_NB_bigrams.png">
 
 As mentioned, I ran a Naive Bayes model to predict which network ran each chyron. In the text processing pipline, I ultimatly settled on the use of single wordsds and bigrams. I also set the `fit_prior` hyperparameter in SKLearn's `MultinomialNB()` to `False`. This meant the prior used to calculate probabilites was set to 50/50 given two targets. Although my targets were fairly well balanced, 56% for MSNBC to 44% for Fox News, setting the uniform prior greatly improved the model's accuracy and helped solve earlier problems with a model that only predicted one class. 
 
